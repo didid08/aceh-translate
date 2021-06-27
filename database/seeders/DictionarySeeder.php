@@ -291,7 +291,11 @@ class DictionarySeeder extends Seeder
             },
             {	"kategori": "sawah",
                 "aceh": "beudeueng",
-                "indonesia": "debu padi, serbuk halus yang berterbangan saat merontokkan padi"
+                "indonesia": "debu padi"
+            },
+            {	"kategori": "sawah",
+                "aceh": "beudeueng",
+                "indonesia": "serbuk halus yang berterbangan saat merontokkan padi"
             },
             {	"kategori": "sawah",
                 "aceh": "naléh",

@@ -1,21 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+@extends('home.master')
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Aceh Translate</title>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
-    <!-- MDB -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.css" rel="stylesheet" />
-    <!-- Toastr -->
-    <link rel="stylesheet" href="{{ asset('assets/admin/plugins/toastr/toastr.min.css') }}">
-</head>
-
-<body>
+@section('content')
     <div class="container-fluid">
         <div class="row p-3 bg-primary text-white">
             <div class="col-9 mt-1">
@@ -204,51 +189,34 @@
             </div>
         </div>
     </div>
+@endsection
 
-    <!-- MDB -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/3.5.0/mdb.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- Toastr -->
-    <script src="{{ asset('assets/admin/plugins/toastr/toastr.min.js') }}"></script>
-    <script>
-        $(document).ready( function () {
-            @if (session()->has('success'))
-                toastr.success('{{ session()->get('success') }}')
-            @endif
-            @if (session()->has('error'))
-                toastr.error('{{ session()->get('error') }}')
-            @endif
-        });
+@section('custom-script')
+    $('#translateFrom').on('change', function() {
+        if ($('#translateFrom').val() == 'aceh') {
+            $('#translateTo').val('indonesia');
+        } else if ($('#translateFrom').val() == 'indonesia') {
+            $('#translateTo').val('aceh');
+        }
+    });
 
-        $('#translateFrom').on('change', function() {
-            if ($('#translateFrom').val() == 'aceh') {
-                $('#translateTo').val('indonesia');
-            } else if ($('#translateFrom').val() == 'indonesia') {
-                $('#translateTo').val('aceh');
+    $('#translateTo').on('change', function() {
+        if ($('#translateTo').val() == 'aceh') {
+            $('#translateFrom').val('indonesia');
+        } else if ($('#translateTo').val() == 'indonesia') {
+            $('#translateFrom').val('aceh');
+        }
+    });
+
+    $('#toTranslate').on('keypress', function(e) {
+        if (e.which == 13) {
+            if ($('#toTranslate').val() == '') {
+                alert('Harap masukkan kata');
+                $('#toTranslate').val('');
+            } else {
+                window.location.replace(window.location.origin + '/home/translate/' + $('#toTranslate').val() +
+                    '/' + $('#translateTo').val());
             }
-        });
-
-        $('#translateTo').on('change', function() {
-            if ($('#translateTo').val() == 'aceh') {
-                $('#translateFrom').val('indonesia');
-            } else if ($('#translateTo').val() == 'indonesia') {
-                $('#translateFrom').val('aceh');
-            }
-        });
-
-        $('#toTranslate').on('keypress', function(e) {
-            if (e.which == 13) {
-                if ($('#toTranslate').val() == '') {
-                    alert('Harap masukkan kata');
-                    $('#toTranslate').val('');
-                } else {
-                    window.location.replace(window.location.origin + '/home/translate/' + $('#toTranslate').val() +
-                        '/' + $('#translateTo').val());
-                }
-            }
-        });
-    </script>
-</body>
-
-</html>
+        }
+    });
+@endsection
