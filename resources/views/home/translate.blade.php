@@ -1,55 +1,19 @@
 @extends('home.master')
 
 @section('header-menu-list')
-    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Kamus</a></li>
-    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#saran-terjemahan">Saran Terjemahan</a></li>
-    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#request-terjemahan">Request Terjemahan</a></li>
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" style="cursor: pointer">Kamus</a></li>
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" data-bs-toggle="modal" data-bs-target="#sarankan-terjemahan" style="cursor: pointer">Sarankan Terjemahan</a></li>
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" data-bs-toggle="modal" data-bs-target="#request-terjemahan" style="cursor: pointer">Request Terjemahan</a></li>
 @endsection
 @section('content')
-    {{-- REQUEST TERJEMAHAN --}}
-    <div class="modal fade" id="request-terjemahan" style="display: none" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-black">Request Terjemahan</h5>
-                    <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <form action="/" method="POST" enctype="multipart/form-data">
-                    <div class="modal-body">
-                        @csrf
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="kosakata" name="kosakata"
-                                placeholder="Masukkan kosakata yang ingin disediakan terjemahannya" required>
-                        </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Bahasa Tujuan</span>
-                            </div>
-                            <select class="form-control" name="bahasa_tujuan" id="bahasa_tujuan">
-                                <option value="aceh" selected>Aceh</option>
-                                <option value="indonesia">Indonesia</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default"
-                            data-mdb-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-primary">Kirim</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
     {{-- SARAN TERJEMAHAN --}}
-    <div class="modal fade" id="saran-terjemahan" style="display: none" aria-hidden="true">
+    <div class="modal fade" id="sarankan-terjemahan" style="display: none" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title text-black">Saran Terjemahan</h5>
-                    <button type="button" class="close" data-mdb-dismiss="modal" aria-label="Close">
+                    <h5 class="modal-title text-black">Sarankan Terjemahan</h5>
+                    <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
@@ -72,10 +36,9 @@
                                 placeholder="Masukkan kosakata" required>
                         </div>
 
-                        <div class="form-outline mb-3">
+                        <div class="input-group mb-3">
                             <textarea rows="3" class="form-control p-2" id="deskripsi"
-                                name="deskripsi"></textarea>
-                            <label class="form-label" for="deskripsi">Deskripsi (Opsional)</label>
+                                name="deskripsi" placeholder="Deskripsi (opsional)"></textarea>
                         </div>
 
                         <div class="text-left text-black font-weight-light" style="font-size: 0.8em">
@@ -84,7 +47,44 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default"
-                            data-mdb-dismiss="modal">Batal</button>
+                            data-bs-dismiss="modal">Batal</button>
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{-- REQUEST TERJEMAHAN --}}
+    <div class="modal fade" id="request-terjemahan" style="display: none" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-black">Request Terjemahan</h5>
+                    <button type="button" class="close btn" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" id="kosakata" name="kosakata"
+                                placeholder="Masukkan kosakata yang ingin disediakan terjemahannya" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Bahasa Tujuan</span>
+                            </div>
+                            <select class="form-control" name="bahasa_tujuan" id="bahasa_tujuan">
+                                <option value="aceh" selected>Aceh</option>
+                                <option value="indonesia">Indonesia</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default"
+                            data-bs-dismiss="modal">Batal</button>
                         <button type="submit" class="btn btn-primary">Kirim</button>
                     </div>
                 </form>
