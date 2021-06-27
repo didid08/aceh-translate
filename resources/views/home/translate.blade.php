@@ -1,5 +1,10 @@
 @extends('home.master')
 
+@section('header-menu-list')
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#">Portfolio</a></li>
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#saran-terjemahan">Saran Terjemahan</a></li>
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#request-terjemahan">Request Terjemahan</a></li>
+@endsection
 @section('content')
     <div class="container-fluid">
         <div class="row p-3 bg-primary text-white">
