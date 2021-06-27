@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,7 +10,7 @@ class TranslateController extends Controller
 {
     public function index($word = null, $translateTo = null)
     {
-        $data = ['title' => 'Kamus Bahasa Aceh | Translate', 'headerTitle' => 'Translate'];
+        $data = ['title' => 'Kamus Bahasa Aceh | Translate', 'headerTitle' => 'Translate', 'headerLink' => route('home.translate')];
 
         if ($word != null && $translateTo != null) {
             if ($translateTo == 'aceh' || $translateTo == 'indonesia') {
@@ -25,7 +25,10 @@ class TranslateController extends Controller
                     $data['translateTo'] = 'indonesia';
                 }
 
-                $query = Dictionary::where($data['translateFrom'], html_entity_decode($word));
+                $translateFrom = $data['translateFrom'];
+                $translateTo = $data['translateTo'];
+
+                $query = Dictionary::where($translateFrom, html_entity_decode($word));
 
                 if ($query->exists()) {
 
@@ -36,13 +39,13 @@ class TranslateController extends Controller
                         $imagePreview = [];
 
                         foreach ($query->get() as $row) {
-                            array_push($translatedWord, $row->$data['translateTo']);
+                            array_push($translatedWord, $row->$translateTo);
                             array_push($description, $row->deskripsi);
                             array_push($imagePreview, $row->gambar);
                         }
 
                     } else {
-                        $data['translatedWord'] = $query->first()->$data['translateTo'];
+                        $data['translatedWord'] = $query->first()->$translateTo;
                         $data['description'] = $query->first()->deskripsi;
                         $data['imagePreview'] = 'no-image.jpg';
                     }
