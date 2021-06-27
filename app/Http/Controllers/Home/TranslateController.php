@@ -40,8 +40,19 @@ class TranslateController extends Controller
 
                         foreach ($query->get() as $row) {
                             array_push($translatedWord, $row->$translateTo);
-                            array_push($description, $row->deskripsi);
-                            array_push($imagePreview, $row->gambar);
+                            if ($row->deskripsi != null) {
+                                array_push($description, $row->deskripsi);
+                            }
+                            if ($row->gambar != null) {
+                                array_push($imagePreview, $row->gambar);
+                            }
+                        }
+
+                        if (sizeof($description) == 0) {
+                            $description = null;
+                        }
+                        if (sizeof($imagePreview) == 0) {
+                            $imagePreview = null;
                         }
 
                         $data['translatedWord'] = $translatedWord;
@@ -55,9 +66,9 @@ class TranslateController extends Controller
                     }
 
                 } else {
-                    $data['translatedWord'] = 'unknown';
-                    $data['description'] = '-';
-                    $data['imagePreview'] = 'no-image.jpg';
+                    $data['translatedWord'] = null;
+                    $data['description'] = null;
+                    $data['imagePreview'] = null;
                 }
 
             } else {

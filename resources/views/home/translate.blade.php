@@ -123,7 +123,15 @@
                 </select>
             </div>
             <div class="row mb-3">
-                <textarea class="form-control" id="translateResult" rows="3" placeholder="Hasil" readonly>{{ $translatedWord ?? '' }}</textarea>
+                <textarea class="form-control" id="translateResult" rows="3" placeholder="{{ isset($word) ? 'Terjemahan tidak ditemukan' : 'Terjemahan akan muncul disini' }}" readonly>
+                    @if (isset($translatedWord))
+                        @if (is_array($translatedWord))
+                            {{ ucfirst(join(', ', $translatedWord)) }}
+                        @else
+                            {{ ucfirst($translatedWord) }}
+                        @endif
+                    @endif
+                </textarea>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12">
@@ -133,12 +141,32 @@
                         <table class="table table-bordered table-striped">
                             <tr>
                                 <td style="width: 25%">Deskripsi</td>
-                                <td>{!! $description !!}</td>
+                                <td>
+                                    @if (isset($description))
+                                        @if (is_array($description))
+                                            {!! $description[0] !!}
+                                        @else
+                                            {!! $description !!}
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width: 25%">Gambar</td>
                                 <td>
-                                    <img src="{{ asset('assets/img/translate-images/' . $imagePreview) }}" alt="" style="width: 220px; height: 200px; float: left; margin-right: 0.5em;">
+                                    @if (isset($imagePreview))
+                                        @if (is_array($imagePreview))
+                                            @foreach ($imagePreview as $img)
+                                                <img src="{{ asset('assets/img/translate-images/' . $img) }}" alt="Preview" style="width: 220px; margin: 0 0.5em 0.5em 0;">
+                                            @endforeach
+                                        @else
+                                            <img src="{{ asset('assets/img/translate-images/' . $imagePreview) }}" alt="Preview" style="width: 220px; margin: 0 0.5em 0.5em 0;">
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                             </tr>
                         </table>
@@ -182,5 +210,7 @@
                 }
             }
         });
+
+        $("#translateResult").val($("#translateResult").val().trim());
     </script>
 @endsection

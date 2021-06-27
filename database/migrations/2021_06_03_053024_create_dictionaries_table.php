@@ -18,8 +18,8 @@ class CreateDictionariesTable extends Migration
             $table->string('kategori');
             $table->string('aceh');
             $table->string('indonesia');
-            $table->longText('deskripsi')->default('-');
-            $table->string('gambar')->default('no-image.jpg');
+            $table->longText('deskripsi')->nullable();
+            $table->string('gambar')->nullable();
             $table->timestamps();
         });
     }
