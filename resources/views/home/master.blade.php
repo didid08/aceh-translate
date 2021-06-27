@@ -38,8 +38,8 @@
     </nav>
 
     <!-- Main-->
-    <section class="masthead bg-primary text-white text-center">
-        <div class="container d-flex flex-column">
+    <section class="bg-primary" style="padding: 10em 0 5em 0;">
+        <div class="container">
             @yield('content')
         </div>
     </section>

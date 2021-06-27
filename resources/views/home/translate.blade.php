@@ -92,83 +92,60 @@
         </div>
     </div>
 
-    <div class="row p-3">
-        <div class="col-sm-12 col-lg-6">
-            <div class="row">
-                <div class="col-12 p-2">
-                    <select id="translateFrom" class="form-control">
-                        <option value="indonesia"
-                            {{ isset($translateFrom) ? ($translateFrom == 'indonesia' ? ' selected' : '') : '' }}>
-                            Indonesia</option>
-                        <option value="aceh"
-                            {{ isset($translateFrom) ? ($translateFrom == 'aceh' ? ' selected' : '') : '' }}>Aceh
-                        </option>
-                    </select>
-                </div>
+    <div class="row">
+        <div class="col-lg-6 col-sm-12">
+            <div class="row mb-2">
+                <select id="translateFrom" class="form-control">
+                    <option value="indonesia"
+                        {{ isset($translateFrom) ? ($translateFrom == 'indonesia' ? ' selected' : '') : '' }}>
+                        Indonesia</option>
+                    <option value="aceh"
+                        {{ isset($translateFrom) ? ($translateFrom == 'aceh' ? ' selected' : '') : '' }}>Aceh
+                    </option>
+                </select>
             </div>
             <div class="row">
-                <div class="col-12 text-center">
-                    <div class="md-form">
-                        <textarea class="md-textarea form-control" id="toTranslate" rows="10"
-                            placeholder="Masukkan kata yang ingin diterjemahkan lalu tekan enter">{{ $word ?? '' }}</textarea>
-                        <!--<label for="toTranslate">Yang mau diterjemahkan</label>-->
-                    </div>
-                    <!--<br><button id="translate" class="btn btn-primary">Terjemahkan</button>-->
+                <textarea class="form-control" id="toTranslate" rows="3" placeholder="Masukkan kata yang ingin diterjemahkan lalu tekan enter">{{ $word ?? '' }}</textarea>
+            </div>
+            <div class="row mt-4 mb-4">
+                <div class="text-center text-white">
+                    -- TO --
                 </div>
             </div>
-            <div class="row pt-3">
-                <div class="col-11">
-                    <i class="fa fa-history"></i>&nbsp;&nbsp;History
-                </div>
-                <div class="col-1">
-                    <i class="fa fa-trash"></i>
-                </div>
+            <div class="row mb-2">
+                <select id="translateTo" class="form-control">
+                    <option value="aceh"
+                        {{ isset($translateTo) ? ($translateTo == 'aceh' ? ' selected' : '') : '' }}>Aceh
+                    </option>
+                    <option value="indonesia"
+                        {{ isset($translateTo) ? ($translateTo == 'indonesia' ? ' selected' : '') : '' }}>Indonesia
+                    </option>
+                </select>
             </div>
-            <div class="row p-2">
-                <div class="col-12 p-2 border">
-                    -----
-                </div>
+            <div class="row mb-3">
+                <textarea class="form-control" id="translateResult" rows="3" placeholder="Hasil" readonly>{{ $translatedWord ?? '' }}</textarea>
             </div>
         </div>
-        <div class="col-sm-12 col-lg-6">
-            <div class="row">
-                <div class="col-12 p-2">
-                    <select id="translateTo" class="form-control">
-                        <option value="aceh"
-                            {{ isset($translateTo) ? ($translateTo == 'aceh' ? ' selected' : '') : '' }}>Aceh
-                        </option>
-                        <option value="indonesia"
-                            {{ isset($translateTo) ? ($translateTo == 'indonesia' ? ' selected' : '') : '' }}>Indonesia
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <div class="md-form">
-                        <textarea class="md-textarea form-control" id="translateResult" rows="10"
-                            placeholder="Hasil" readonly>{{ $translatedWord ?? '' }}</textarea>
-                        <!--<label for="translateResult">Hasil</label>-->
-                    </div>
-                </div>
-            </div>
-            <div class="row pt-3">
-                <div class="col-12">
-                    <i class="fa fa-info-circle"></i>&nbsp;&nbsp;Preview & Description
-                </div>
-            </div>
-            <div class="row p-2">
-                <div class="col-12 p-2 border">
-                    @if (isset($imagePreview))
-                        <img src="{{ asset('assets/img/translate-images/' . $imagePreview) }}" alt=""
-                            style="width: 220px; height: 200px; float: left; margin-right: 0.5em;">
+        <div class="col-lg-6 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    @if (isset($translatedWord))
+                        <table class="table table-bordered table-striped">
+                            <tr>
+                                <td style="width: 25%">Deskripsi</td>
+                                <td>{!! $description !!}</td>
+                            </tr>
+                            <tr>
+                                <td style="width: 25%">Gambar</td>
+                                <td>
+                                    <img src="{{ asset('assets/img/translate-images/' . $imagePreview) }}" alt="" style="width: 220px; height: 200px; float: left; margin-right: 0.5em;">
+                                </td>
+                            </tr>
+                        </table>
                     @else
-                        -
-                    @endif
-                    @if (isset($description))
-                        {!! $description !!}
-                    @else
-                        -
+                        <div class="text-center" style="padding: 9.4em 0;">
+                            <i>Detail terjemahan akan muncul disini</i>
+                        </div>
                     @endif
                 </div>
             </div>

@@ -44,10 +44,14 @@ class TranslateController extends Controller
                             array_push($imagePreview, $row->gambar);
                         }
 
+                        $data['translatedWord'] = $translatedWord;
+                        $data['description'] = $description;
+                        $data['imagePreview'] = $imagePreview;
+
                     } else {
                         $data['translatedWord'] = $query->first()->$translateTo;
                         $data['description'] = $query->first()->deskripsi;
-                        $data['imagePreview'] = 'no-image.jpg';
+                        $data['imagePreview'] = $query->first()->gambar;
                     }
 
                 } else {
