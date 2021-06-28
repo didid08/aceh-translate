@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AcehTranslate | Admin</title>
+  <title>Kamus Bahasa Aceh | Admin</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,7 +28,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a target="_blank" href="{{ route('home') }}" class="nav-link">Home</a>
+        <a target="_blank" href="{{ route('home.kamus') }}" class="nav-link">Home</a>
       </li>
     </ul>
 
@@ -55,7 +55,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('admin') }}" class="brand-link">
-      <span class="brand-text font-weight-bold ml-2">AT</span>&nbsp;<span class="brand-text" style="font-size: 0.8em">Admin</span>
+      <span class="brand-text font-weight-bold ml-2">KBA</span>&nbsp;<span class="brand-text" style="font-size: 0.8em">Admin</span>
       <br><span class="brand-text ml-3" style="font-size: 0.7em">Logged as: {{ Auth::user()->name }}</span>
     </a>
 

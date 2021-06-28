@@ -113,18 +113,18 @@
                         <div class="col">
                             <table id="daftar-kosakata-table" class="table table-bordered table-hover dataTable dtr-inline" role="grid">
                                 <thead>
-                                    <th>Aceh</th>
-                                    <th>Indonesia</th>
-                                    <th class="text-center">Deskripsi</th>
-                                    <th class="text-center">Gambar</th>
+                                    <th>Kategori</th>
+                                    <th>Kosakata (Aceh)</th>
+                                    <th>Kosakata (Indonesia)</th>
+                                    <th class="text-center">Detail</th>
                                     <th class="text-center">Opsi</th>
                                 </thead>
                                 <tbody>
                                     @foreach ($dictionary as $item)
                                         <tr>
-                                            <td>{{ $item->aceh }}</td>
-                                            <td>{{ $item->indonesia }}</td>
-                                            <td class="text-center"><button class="btn btn-sm btn-info">Lihat</button></td>
+                                            <td>{{ $item->kategori }}</td>
+                                            <td style="width: 25%">{{ $item->aceh }}</td>
+                                            <td style="width: 30%">{{ $item->indonesia }}</td>
                                             <td class="text-center"><button class="btn btn-sm btn-info">Lihat</button></td>
                                             <td class="text-center">
                                                 <button class="btn btn-outline-secondary"><i class="fa fa-edit"></i></button>

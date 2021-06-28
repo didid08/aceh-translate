@@ -15,7 +15,7 @@ class CreateDictionariesTable extends Migration
     {
         Schema::create('dictionaries', function (Blueprint $table) {
             $table->id();
-            $table->string('kategori');
+            $table->string('kategori')->default('sawah');
             $table->string('aceh');
             $table->string('indonesia');
             $table->longText('deskripsi')->nullable();
