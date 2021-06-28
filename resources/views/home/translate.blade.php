@@ -1,7 +1,7 @@
 @extends('home.master')
 
 @section('header-menu-list')
-    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="#" style="cursor: pointer">Kamus</a></li>
+    <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{{ route('home.kamus') }}" style="cursor: pointer">Kamus</a></li>
     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" data-bs-toggle="modal" data-bs-target="#sarankan-terjemahan" style="cursor: pointer">Sarankan Terjemahan</a></li>
     <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" data-bs-toggle="modal" data-bs-target="#request-terjemahan" style="cursor: pointer">Request Terjemahan</a></li>
 @endsection

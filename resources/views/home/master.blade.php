@@ -38,7 +38,7 @@
     </nav>
 
     <!-- Main-->
-    <section class="bg-primary" style="padding: 10em 0 5em 0;">
+    <section class="bg-primary" style="padding: 8.5em 0 5em 0;">
         <div class="container">
             @yield('content')
         </div>
