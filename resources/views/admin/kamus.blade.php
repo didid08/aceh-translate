@@ -17,6 +17,7 @@
                             <button class="btn btn-primary" data-toggle="modal" data-target="#tambah-kosakata"><i class="fa fa-plus mr-2"></i>Tambah</button>
                             <button class="btn btn-secondary" data-toggle="modal" data-target="#lihat-saran"><i class="fa fa-list mr-2"></i>Saran (0)</button>
                             <button class="btn btn-secondary" data-toggle="modal" data-target="#lihat-request"><i class="fa fa-list mr-2"></i>Request (0)</button>
+
                             {{-- TAMBAH KOSAKATA --}}
                             <div class="modal fade" id="tambah-kosakata" style="display: none" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -69,6 +70,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             {{-- LIHAT SARAN --}}
                             <div class="modal fade" id="lihat-saran" style="display: none" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -88,6 +90,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             {{-- LIHAT REQUEST --}}
                             <div class="modal fade" id="lihat-request" style="display: none" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -100,6 +103,43 @@
                                         </div>
                                         <div class="modal-body">
 
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- LIHAT DETAIL KOSAKATA --}}
+                            <div class="modal fade" id="lihat-detail-kosakata" style="display: none" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Detail Kosakata</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-bordered table-striped">
+                                                <tr>
+                                                    <td style="width: 38%">Kosakata (Aceh)</td>
+                                                    <td id="detail-kosakata-aceh"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 38%">Kosakata (Indonesia)</td>
+                                                    <td id="detail-kosakata-indonesia"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 38%">Deskripsi</td>
+                                                    <td id="detail-deskripsi"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 38%">Gambar</td>
+                                                    <td id="detail-gambar"></td>
+                                                </tr>
+                                            </table>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -120,12 +160,12 @@
                                     <th class="text-center">Opsi</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dictionary as $item)
+                                    @foreach ($dictionary->sortBy('aceh') as $item)
                                         <tr>
                                             <td>{{ $item->kategori }}</td>
                                             <td style="width: 25%">{{ $item->aceh }}</td>
                                             <td style="width: 30%">{{ $item->indonesia }}</td>
-                                            <td class="text-center"><button class="btn btn-sm btn-info">Lihat</button></td>
+                                            <td class="text-center"><button class="btn btn-sm btn-info" data-toggle="modal" data-target="#lihat-detail-kosakata" onclick="viewDetail('{{ $item->aceh }}', '{{ $item->indonesia }}', '{{ isset($item->deskripsi) ? $item->deskripsi : '-' }}', '{{ isset($item->gambar) ? $item->gambar : '-' }}')">Lihat</button></td>
                                             <td class="text-center">
                                                 <button class="btn btn-outline-secondary"><i class="fa fa-edit"></i></button>
                                                 <form action="{{ route('admin.kamus.delete', ['dictionaryId' => $item->id]) }}" method="POST" style="display: inline">
@@ -161,5 +201,17 @@
         $(function () {
             bsCustomFileInput.init();
         });
+
+        function viewDetail (kosakataAceh, kosakataIndonesia, deskripsi, gambar) {
+            $("#detail-kosakata-aceh").html(kosakataAceh);
+            $("#detail-kosakata-indonesia").html(kosakataIndonesia);
+            $("#detail-deskripsi").html(deskripsi);
+
+            if (gambar == '-') {
+                $("#detail-gambar").html('-');
+            } else {
+                $("#detail-gambar").html('<img src="../assets/img/translate-images/' + gambar + '"alt="preview-image" style="width: 220px">');
+            }
+        }
     </script>
 @endsection

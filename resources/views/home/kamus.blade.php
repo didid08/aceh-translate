@@ -45,7 +45,7 @@
                                 <td>{{ ucfirst($word) }}</td>
                             </tr>
                             <tr>
-                                <td style="width: 38%">Terjemahan (Indonesia)</td>
+                                <td style="width: 38%">Kosakata (Indonesia)</td>
                                 <td>
                                     @if (is_array($translatedWord))
                                         {{ ucfirst(join(', ', $translatedWord)) }}
