@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Dictionary;
+use App\Models\VocabularyRequest;
+use App\Models\VocabularySuggestion;
 
 class TranslateController extends Controller
 {
@@ -77,5 +80,64 @@ class TranslateController extends Controller
         }
 
         return view('home.translate', $data);
+    }
+
+    public function pushSuggestion (Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'aceh' => 'required',
+            'indonesia' => 'required'
+        ], [
+            'required' => 'Harap masukkan :attribute'
+        ], [
+            'aceh' => 'Kosakata Bahasa Aceh',
+            'indonesia' => 'Kosakata Bahasa Indonesia'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('home.translate')
+                        ->withErrors($validator, 'vocabularySuggestion')
+                        ->withInput();
+        }
+
+        $data = [
+            'aceh' => $request->aceh,
+            'indonesia' => $request->indonesia,
+        ];
+
+        // Menambah Deskripsi
+        if (!empty($request->deskripsi)) {
+            $data['deskripsi'] = $request->deskripsi;
+        }
+
+        VocabularySuggestion::create($data);
+
+        return redirect()->route('home.translate')->with('success', 'Berhasil menyarankan terjemahan');
+    }
+
+    public function pushRequest (Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'kosakata' => 'required',
+            'bahasa_tujuan' => 'required'
+        ], [
+            'required' => 'Harap masukkan :attribute'
+        ], [
+            'kosakata' => 'Kosakata',
+            'bahasa_tujuan' => 'Bahasa Tujuan'
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route('home.translate')
+                        ->withErrors($validator, 'vocabularyRequest')
+                        ->withInput();
+        }
+
+        VocabularyRequest::create([
+            'kosakata' => $request->kosakata,
+            'bahasa_tujuan' => $request->bahasa_tujuan
+        ]);
+
+        return redirect()->route('home.translate')->with('success', 'Berhasil request terjemahan');
     }
 }

@@ -117,14 +117,16 @@
 <script src="{{ asset('assets/admin/plugins/toastr/toastr.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('assets/admin/js/adminlte.min.js') }}"></script>
-$(document).ready( function () {
-    @if (session()->has('success'))
-        toastr.success('{{ session()->get('success') }}')
-    @endif
-    @if (session()->has('error'))
-        toastr.error('{{ session()->get('error') }}')
-    @endif
-});
+<script>
+    $(document).ready( function () {
+        @if (session()->has('success'))
+            toastr.success('{{ session()->get('success') }}')
+        @endif
+        @if (session()->has('error'))
+            toastr.error('{{ session()->get('error') }}')
+        @endif
+    });
+</script>
 @yield('custom-script')
 </body>
 </html>

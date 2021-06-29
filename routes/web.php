@@ -27,8 +27,10 @@ Route::get('/home', function() {
 });
 
 /* HOME ROUTES */
-Route::get('/home/translate/{word?}/{translateTo?}', [TranslateController::class, 'index'])->name('home.translate');
 Route::get('/home/kamus/{word?}', [HomeKamusController::class, 'index'])->name('home.kamus');
+Route::get('/home/translate/{word?}/{translateTo?}', [TranslateController::class, 'index'])->name('home.translate');
+Route::post('/home/translate/sarankan', [TranslateController::class, 'pushSuggestion'])->name('home.translate.sarankan');
+Route::post('/home/translate/request', [TranslateController::class, 'pushRequest'])->name('home.translate.request');
 
 /* ADMIN ROUTES */
 Route::get('/admin', function () {
