@@ -9,21 +9,23 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\Dictionary;
+use App\Models\VocabularyRequest;
+use App\Models\VocabularySuggestion;
 
 class KamusController extends Controller
 {
     public function index()
     {
-        $dictionary = Dictionary::get();
-
         return view('admin.kamus', [
             'navItemActive' => 'kamus',
             'pageTitle' => 'Kamus',
-            'dictionary' => $dictionary
+            'dictionary' => Dictionary::orderBy('created_at', 'DESC')->get(),
+            'vocabularyRequests' => VocabularyRequest::orderBy('created_at', 'DESC')->get(),
+            'vocabularySuggestions' => VocabularySuggestion::orderBy('created_at', 'DESC')->get()
         ]);
     }
 
-    public function addVocabulary(Request $request)
+    public function addVocabulary (Request $request)
     {
         $validator = Validator::make($request->all(), [
             'aceh' => 'required',
@@ -66,7 +68,47 @@ class KamusController extends Controller
 
         Dictionary::create($data);
 
+        //Menghapus saran dan request bila diperlukan
+        VocabularySuggestion::where([['aceh', '=', $request->aceh], ['indonesia', '=', $request->indonesia]])->delete();
+        VocabularyRequest::where('kosakata', $request->aceh)->delete();
+        VocabularyRequest::where('kosakata', $request->indonesia)->delete();
+
         return redirect()->route('admin.kamus')->with('success', 'Kosakata berhasil ditambahkan');
+    }
+
+    public function acceptVocabulary ($id)
+    {
+        $vocabularySuggestion = VocabularySuggestion::where('id', $id);
+
+        $data = [
+            'aceh' => $vocabularySuggestion->first()->aceh,
+            'indonesia' => $vocabularySuggestion->first()->indonesia
+        ];
+
+        if (isset($vocabularySuggestion->first()->deskripsi)) {
+            $data['deskripsi'] = $vocabularySuggestion->first()->deskripsi;
+        }
+
+        Dictionary::create($data);
+        $vocabularySuggestion->delete();
+
+        return redirect()->route('admin.kamus')->with('success', 'Kosakata yang disarankan berhasil ditambahkan secara langsung');
+    }
+
+    public function denyVocabulary ($id)
+    {
+        $vocabularySuggestion = VocabularySuggestion::where('id', $id);
+        $vocabularySuggestion->delete();
+
+        return redirect()->route('admin.kamus')->with('success', 'Saran Kosakata ditolak');
+    }
+
+    public function denyRequest ($id)
+    {
+        $vocabularyRequest = VocabularyRequest::where('id', $id);
+        $vocabularyRequest->delete();
+
+        return redirect()->route('admin.kamus')->with('success', 'Request Kosakata diabaikan');
     }
 
     public function updateVocabulary ($id, Request $request)

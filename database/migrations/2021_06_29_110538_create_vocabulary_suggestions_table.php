@@ -17,7 +17,7 @@ class CreateVocabularySuggestionsTable extends Migration
             $table->id();
             $table->string('aceh');
             $table->string('indonesia');
-            $table->longText('deskripsi');
+            $table->longText('deskripsi')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

@@ -15,8 +15,8 @@
                     <div class="row pb-4">
                         <div class="col-12">
                             <button class="btn btn-primary" data-toggle="modal" data-target="#tambah-kosakata"><i class="fa fa-plus mr-2"></i>Tambah</button>
-                            <button class="btn btn-secondary" data-toggle="modal" data-target="#lihat-saran"><i class="fa fa-list mr-2"></i>Saran (0)</button>
-                            <button class="btn btn-secondary" data-toggle="modal" data-target="#lihat-request"><i class="fa fa-list mr-2"></i>Request (0)</button>
+                            <button class="btn btn-secondary" data-toggle="modal" data-target="#lihat-saran"><i class="fa fa-list mr-2"></i>Saran ({{ $vocabularySuggestions->count() }})</button>
+                            <button class="btn btn-secondary" data-toggle="modal" data-target="#lihat-request"><i class="fa fa-list mr-2"></i>Request ({{ $vocabularyRequests->count() }})</button>
 
                             {{-- TAMBAH KOSAKATA --}}
                             <div class="modal fade" id="tambah-kosakata" style="display: none" aria-hidden="true">
@@ -127,7 +127,7 @@
 
                             {{-- LIHAT SARAN --}}
                             <div class="modal fade" id="lihat-saran" style="display: none" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
+                                <div class="modal-dialog modal-xl">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h4 class="modal-title">Daftar Saran Terjemahan</h4>
@@ -136,7 +136,37 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-
+                                            <table class="table table-bordered table-striped" id="lihat-saran-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Kosakata (Aceh)</th>
+                                                        <th>Kosakata (Indonesia)</th>
+                                                        <th>Deskripsi</th>
+                                                        <th>Opsi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($vocabularySuggestions as $vocabularySuggestion)
+                                                        <tr>
+                                                            {{-- <td>{{ date('d/m/Y H:i', (int)($vocabularySuggestion->createdAt)) }}</td> --}}
+                                                            <td>{{ $vocabularySuggestion->aceh }}</td>
+                                                            <td>{{ $vocabularySuggestion->indonesia }}</td>
+                                                            <td>{{ $vocabularySuggestion->deskripsi }}</td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-primary mb-1" onclick="editDanTerimaSaran('{{ $vocabularySuggestion->aceh }}', '{{ $vocabularySuggestion->indonesia }}', '{{ isset($vocabularySuggestion->deskripsi) ? $vocabularySuggestion->deskripsi : '-' }}')">Edit & Terima</button>
+                                                                <form action="{{ route('admin.kamus.terima-saran', ['id' => $vocabularySuggestion->id]) }}" method="POST" style="display: inline">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-sm btn-secondary mb-1">Terima</button>
+                                                                </form>
+                                                                <form action="{{ route('admin.kamus.tolak-saran', ['id' => $vocabularySuggestion->id]) }}" method="POST" style="display: inline">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-sm btn-danger mb-1">Tolak</button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -156,7 +186,31 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-
+                                            <table class="table table-bordered table-striped" id="lihat-request-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Kosakata</th>
+                                                        <th>Sediakan Terjemahan kedalam Bahasa</th>
+                                                        <th>Opsi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($vocabularyRequests as $vocabularyRequest)
+                                                        <tr>
+                                                            {{-- <td>{{ date('d/m/Y H:i', (int)($vocabularyRequest->createdAt)) }}</td> --}}
+                                                            <td>{{ $vocabularyRequest->kosakata }}</td>
+                                                            <td>{{ ucfirst($vocabularyRequest->bahasa_tujuan) }}</td>
+                                                            <td>
+                                                                <button class="btn btn-sm btn-primary mb-1">Sediakan</button>
+                                                                <form action="{{ route('admin.kamus.abaikan-request', ['id' => $vocabularyRequest->id]) }}" method="POST" style="display: inline">
+                                                                    @csrf
+                                                                    <button type="submit" class="btn btn-sm btn-danger mb-1">Abaikan</button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
@@ -214,7 +268,7 @@
                                     <th class="text-center">Opsi</th>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dictionary->sortBy('aceh') as $item)
+                                    @foreach ($dictionary as $item)
                                         <tr>
                                             <td>{{ $item->kategori }}</td>
                                             <td style="width: 25%">{{ $item->aceh }}</td>
@@ -252,6 +306,9 @@
     <script src="{{ asset('assets/admin/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <script>
         $("#daftar-kosakata-table").DataTable();
+        $("#lihat-saran-table").DataTable();
+        $("#lihat-request-table").DataTable();
+
         $(function () {
             bsCustomFileInput.init();
         });
@@ -276,6 +333,18 @@
             if (oldDeskripsi != '-') {
                 $("#edit-deskripsi").val(oldDeskripsi);
             }
+        }
+
+        function editDanTerimaSaran (aceh, indonesia, deskripsi) {
+            $("#aceh").val(aceh);
+            $("#indonesia").val(indonesia);
+
+            if (deskripsi != '-') {
+                $("#deskripsi").val(deskripsi);
+            }
+
+            $("#lihat-saran").modal('hide');
+            $("#tambah-kosakata").modal('show');
         }
     </script>
 @endsection
