@@ -201,7 +201,7 @@
                                                             <td>{{ $vocabularyRequest->kosakata }}</td>
                                                             <td>{{ ucfirst($vocabularyRequest->bahasa_tujuan) }}</td>
                                                             <td>
-                                                                <button class="btn btn-sm btn-primary mb-1">Sediakan</button>
+                                                                <button class="btn btn-sm btn-primary mb-1" onclick="sediakanTerjemahan('{{ $vocabularyRequest->kosakata }}', '{{ $vocabularyRequest->bahasa_tujuan }}')">Sediakan</button>
                                                                 <form action="{{ route('admin.kamus.abaikan-request', ['id' => $vocabularyRequest->id]) }}" method="POST" style="display: inline">
                                                                     @csrf
                                                                     <button type="submit" class="btn btn-sm btn-danger mb-1">Abaikan</button>
@@ -344,6 +344,21 @@
             }
 
             $("#lihat-saran").modal('hide');
+            $("#tambah-kosakata").modal('show');
+        }
+
+        function sediakanTerjemahan (kosakata, bahasaTujuan) {
+            if (bahasaTujuan == 'aceh') {
+                $("#aceh").val('');
+                $("#indonesia").val(kosakata);
+                $("#deskripsi").val('');
+            } else if (bahasaTujuan == 'indonesia') {
+                $("#aceh").val(kosakata);
+                $("#indonesia").val('');
+                $("#deskripsi").val('');
+            }
+
+            $("#lihat-request").modal('hide');
             $("#tambah-kosakata").modal('show');
         }
     </script>
