@@ -67,7 +67,7 @@ return [
     */
 
     'links' => [
-        public_path('assets\img\translate-images') => storage_path('app\images\translate-images'),
+        public_path('assets/img/translate-images') => storage_path('app/images/translate-images'),
     ],
 
 ];

@@ -71,6 +71,60 @@
                                 </div>
                             </div>
 
+                            {{-- EDIT KOSAKATA --}}
+                            <div class="modal fade" id="edit-kosakata" style="display: none" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Edit Kosakata</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <form action="" method="POST" enctype="multipart/form-data" id="edit-kosakata-form">
+                                        <div class="modal-body">
+                                            @method('PATCH')
+                                            @csrf
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Aceh</span>
+                                                </div>
+                                                <input type="text" class="form-control" id="edit-aceh" name="aceh" placeholder="Masukkan kosakata" required>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">Indonesia</span>
+                                                </div>
+                                                <input type="text" class="form-control" id="edit-indonesia" name="indonesia" placeholder="Masukkan kosakata" required>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">(Opsional) Deskripsi</span>
+                                                </div>
+                                                <textarea rows="2" class="form-control" id="edit-deskripsi" name="deskripsi" placeholder="Masukkan deskripsi"></textarea>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">(Opsional) Gambar</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="edit-gambar" name="gambar">
+                                                    <label class="custom-file-label" for="gambar">Pilih gambar</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
+                                            <button type="submit" class="btn btn-primary">Kirim</button>
+                                        </div>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+
                             {{-- LIHAT SARAN --}}
                             <div class="modal fade" id="lihat-saran" style="display: none" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -167,7 +221,7 @@
                                             <td style="width: 30%">{{ $item->indonesia }}</td>
                                             <td class="text-center"><button class="btn btn-sm btn-info" data-toggle="modal" data-target="#lihat-detail-kosakata" onclick="viewDetail('{{ $item->aceh }}', '{{ $item->indonesia }}', '{{ isset($item->deskripsi) ? $item->deskripsi : '-' }}', '{{ isset($item->gambar) ? $item->gambar : '-' }}')">Lihat</button></td>
                                             <td class="text-center">
-                                                <button class="btn btn-outline-secondary"><i class="fa fa-edit"></i></button>
+                                                <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#edit-kosakata" onclick="editKosakata('{{ $item->id }}', '{{ $item->aceh }}', '{{ $item->indonesia }}', '{{ isset($item->deskripsi) ? $item->deskripsi : '-' }}')"><i class="fa fa-edit"></i></button>
                                                 <form action="{{ route('admin.kamus.delete', ['dictionaryId' => $item->id]) }}" method="POST" style="display: inline">
                                                     @method('DELETE')
                                                     @csrf
@@ -211,6 +265,16 @@
                 $("#detail-gambar").html('-');
             } else {
                 $("#detail-gambar").html('<img src="../assets/img/translate-images/' + gambar + '"alt="preview-image" style="width: 220px">');
+            }
+        }
+
+        function editKosakata (id, oldAceh, oldIndonesia, oldDeskripsi) {
+            $("#edit-kosakata-form").attr('action', '{{ route('admin.kamus.update') }}'+'/'+id);
+            $("#edit-aceh").val(oldAceh);
+            $("#edit-indonesia").val(oldIndonesia);
+
+            if (oldDeskripsi != '-') {
+                $("#edit-deskripsi").val(oldDeskripsi);
             }
         }
     </script>

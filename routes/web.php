@@ -36,5 +36,7 @@ Route::get('/admin', function () {
 })->name('admin');
 Route::get('/admin/kamus', [AdminKamusController::class, 'index'])->middleware(['auth'])->name('admin.kamus');
 Route::post('/admin/kamus', [AdminKamusController::class, 'addVocabulary'])->middleware(['auth'])->name('admin.kamus.add');
+Route::patch('/admin/kamus/{id?}', [AdminKamusController::class, 'updateVocabulary'])->middleware(['auth'])->name('admin.kamus.update');
 Route::delete('/admin/kamus/{dictionaryId}', [AdminKamusController::class, 'deleteVocabulary'])->middleware(['auth'])->name('admin.kamus.delete');
+
 require __DIR__.'/auth.php';
