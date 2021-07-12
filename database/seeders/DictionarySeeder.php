@@ -350,7 +350,8 @@ class DictionarySeeder extends Seeder
             },
             {	"kategori": "sawah",
                 "aceh": "adèe padè",
-                "indonesia": "menjemur padi"
+                "indonesia": "menjemur padi",
+                "audio": "adee padee.mp3"
             },
             {	"kategori": "sawah",
                 "aceh": "brèh",

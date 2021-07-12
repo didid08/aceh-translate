@@ -104,10 +104,23 @@
                             <tr>
                                 <td style="width: 38%">Audio</td>
                                 <td>
-                                    <audio controls preload="metadata" style=" width:300px;">
-                                        <source src="{{ asset('assets/audio/adee padee.mp3') }}" type="audio/mpeg">
-                                        Your browser does not support the audio element.
-                                    </audio><br />
+                                    @if (isset($audio))
+                                        @if (is_array($audio))
+                                            @foreach ($audio as $aud)
+                                                <audio controls preload="metadata" style=" width:300px;">
+                                                    <source src="{{ asset('assets/audio/translate-audio/'.$aud) }}" type="audio/mpeg">
+                                                    Your browser does not support the audio element.
+                                                </audio>
+                                            @endforeach
+                                        @else
+                                            <audio controls preload="metadata" style=" width:300px;">
+                                                <source src="{{ asset('assets/audio/translate-audio/'.$audio) }}" type="audio/mpeg">
+                                                Your browser does not support the audio element.
+                                            </audio>
+                                        @endif
+                                    @else
+                                        -
+                                    @endif
                                 </td>
                             </tr>
                         </table>

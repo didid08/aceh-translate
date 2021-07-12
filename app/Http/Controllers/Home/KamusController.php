@@ -30,6 +30,7 @@ class KamusController extends Controller
                     $translatedWord = [];
                     $description = [];
                     $imagePreview = [];
+                    $audio = [];
 
                     foreach ($query->get() as $row) {
                         array_push($translatedWord, $row->indonesia);
@@ -39,6 +40,9 @@ class KamusController extends Controller
                         if ($row->gambar != null) {
                             array_push($imagePreview, $row->gambar);
                         }
+                        if ($row->audio != null) {
+                            array_push($audio, $row->audio);
+                        }
                     }
 
                     if (sizeof($description) == 0) {
@@ -47,15 +51,20 @@ class KamusController extends Controller
                     if (sizeof($imagePreview) == 0) {
                         $imagePreview = null;
                     }
+                    if (sizeof($audio) == 0) {
+                        $audio = null;
+                    }
 
                     $data['translatedWord'] = $translatedWord;
                     $data['description'] = $description;
                     $data['imagePreview'] = $imagePreview;
+                    $data['audio'] = $audio;
 
                 } else {
                     $data['translatedWord'] = $query->first()->indonesia;
                     $data['description'] = $query->first()->deskripsi;
                     $data['imagePreview'] = $query->first()->gambar;
+                    $data['audio'] = $query->first()->audio;
                 }
 
             } else {

@@ -61,6 +61,16 @@
                                                     <label class="custom-file-label" for="gambar">Pilih gambar</label>
                                                 </div>
                                             </div>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">(Opsional) Audio</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="audio" name="audio">
+                                                    <label class="custom-file-label" for="audio">Pilih audio</label>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer justify-content-between">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
@@ -112,7 +122,17 @@
                                                 </div>
                                                 <div class="custom-file">
                                                     <input type="file" class="custom-file-input" id="edit-gambar" name="gambar">
-                                                    <label class="custom-file-label" for="gambar">Pilih gambar</label>
+                                                    <label class="custom-file-label" for="edit-gambar">Pilih gambar</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">(Opsional) Audio</span>
+                                                </div>
+                                                <div class="custom-file">
+                                                    <input type="file" class="custom-file-input" id="edit-audio" name="audio">
+                                                    <label class="custom-file-label" for="edit-audio">Pilih audio</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -247,6 +267,10 @@
                                                     <td style="width: 38%">Gambar</td>
                                                     <td id="detail-gambar"></td>
                                                 </tr>
+                                                <tr>
+                                                    <td style="width: 38%">Audio</td>
+                                                    <td id="detail-audio"></td>
+                                                </tr>
                                             </table>
                                         </div>
                                         <div class="modal-footer justify-content-between">
@@ -273,7 +297,7 @@
                                             <td>{{ $item->kategori }}</td>
                                             <td style="width: 25%">{{ $item->aceh }}</td>
                                             <td style="width: 30%">{{ $item->indonesia }}</td>
-                                            <td class="text-center"><button class="btn btn-sm btn-info" data-toggle="modal" data-target="#lihat-detail-kosakata" onclick="viewDetail('{{ $item->aceh }}', '{{ $item->indonesia }}', '{{ isset($item->deskripsi) ? $item->deskripsi : '-' }}', '{{ isset($item->gambar) ? $item->gambar : '-' }}')">Lihat</button></td>
+                                            <td class="text-center"><button class="btn btn-sm btn-info" data-toggle="modal" data-target="#lihat-detail-kosakata" onclick="viewDetail('{{ $item->aceh }}', '{{ $item->indonesia }}', '{{ isset($item->deskripsi) ? $item->deskripsi : '-' }}', '{{ isset($item->gambar) ? $item->gambar : '-' }}', '{{ isset($item->audio) ? $item->audio : '-' }}')">Lihat</button></td>
                                             <td class="text-center">
                                                 <button class="btn btn-outline-secondary" data-toggle="modal" data-target="#edit-kosakata" onclick="editKosakata('{{ $item->id }}', '{{ $item->aceh }}', '{{ $item->indonesia }}', '{{ isset($item->deskripsi) ? $item->deskripsi : '-' }}')"><i class="fa fa-edit"></i></button>
                                                 <form action="{{ route('admin.kamus.delete', ['dictionaryId' => $item->id]) }}" method="POST" style="display: inline">
@@ -313,7 +337,7 @@
             bsCustomFileInput.init();
         });
 
-        function viewDetail (kosakataAceh, kosakataIndonesia, deskripsi, gambar) {
+        function viewDetail (kosakataAceh, kosakataIndonesia, deskripsi, gambar, audio) {
             $("#detail-kosakata-aceh").html(kosakataAceh);
             $("#detail-kosakata-indonesia").html(kosakataIndonesia);
             $("#detail-deskripsi").html(deskripsi);
@@ -322,6 +346,12 @@
                 $("#detail-gambar").html('-');
             } else {
                 $("#detail-gambar").html('<img src="../assets/img/translate-images/' + gambar + '"alt="preview-image" style="width: 220px">');
+            }
+
+            if (audio == '-') {
+                $("#detail-audio").html('-');
+            } else {
+                $("#detail-audio").html('<audio controls preload="metadata" style=" width:300px;"><source src="../assets/audio/translate-audio/'+ audio +'" type="audio/mpeg">Your browser does not support the audio element.</audio>');
             }
         }
 

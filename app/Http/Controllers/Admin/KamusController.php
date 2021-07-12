@@ -30,7 +30,8 @@ class KamusController extends Controller
         $validator = Validator::make($request->all(), [
             'aceh' => 'required',
             'indonesia' => 'required',
-            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'audio' => 'file|mimes:mp3|max:10240'
         ], [
             'required' => 'Harap masukkan :attribute',
             'gambar.image' => ':attribute tidak valid',
@@ -39,7 +40,8 @@ class KamusController extends Controller
         ], [
             'aceh' => 'Kosakata Bahasa Aceh',
             'indonesia' => 'Kosakata Bahasa Indonesia',
-            'gambar' => 'Gambar'
+            'gambar' => 'Gambar',
+            'audio' => 'Audio'
         ]);
 
         if ($validator->fails()) {
@@ -64,6 +66,14 @@ class KamusController extends Controller
             $imageName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
             $request->gambar->storeAs('images/translate-images', $imageName);
             $data['gambar'] = $imageName;
+        }
+
+        //Menyimpan Audio
+        if ($request->hasFile('audio')) {
+            $ext = $request->audio->extension();
+            $audioName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
+            $request->audio->storeAs('audio/translate-audio', $audioName);
+            $data['audio'] = $audioName;
         }
 
         Dictionary::create($data);
@@ -116,7 +126,8 @@ class KamusController extends Controller
         $validator = Validator::make($request->all(), [
             'aceh' => 'required',
             'indonesia' => 'required',
-            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048'
+            'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'audio' => 'file|mimes:mp3|max:10240'
         ], [
             'required' => 'Harap masukkan :attribute',
             'gambar.image' => ':attribute tidak valid',
@@ -125,7 +136,8 @@ class KamusController extends Controller
         ], [
             'aceh' => 'Kosakata Bahasa Aceh',
             'indonesia' => 'Kosakata Bahasa Indonesia',
-            'gambar' => 'Gambar'
+            'gambar' => 'Gambar',
+            'audio' => 'Audio'
         ]);
 
         if ($validator->fails()) {
@@ -157,6 +169,18 @@ class KamusController extends Controller
             $data['gambar'] = $imageName;
         }
 
+        //Mengupdate Audio
+        if ($request->hasFile('audio')) {
+            // Hapus Audio Lama
+            $oldAudioName = Dictionary::firstWhere('id', $id)->audio;
+            Storage::delete('audio/translate-audio/' . $oldAudioName);
+
+            $ext = $request->audio->extension();
+            $audioName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
+            $request->audio->storeAs('audio/translate-audio', $audioName);
+            $data['audio'] = $audioName;
+        }
+
         Dictionary::where('id', $id)->update($data);
 
         return redirect()->route('admin.kamus')->with('success', 'Kosakata berhasil diupdate');
@@ -166,8 +190,11 @@ class KamusController extends Controller
     {
         $dictionary = Dictionary::findOrFail($dictionaryId);
         try {
-            if ($dictionary->gambar != 'no-image.jpg') {
+            if (isset($dictionary->gambar)) {
                 Storage::delete('images/translate-images/'.$dictionary->gambar);
+            }
+            if (isset($dictionary->audio)) {
+                Storage::delete('audio/translate-audio/'.$dictionary->audio);
             }
             $dictionary->delete();
             return redirect()->route('admin.kamus')->with('success', 'Kosakata berhasil dihapus');

@@ -9,5 +9,5 @@ class Dictionary extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['kategori', 'aceh', 'indonesia', 'deskripsi', 'gambar'];
+    protected $fillable = ['kategori', 'aceh', 'indonesia', 'deskripsi', 'gambar', 'audio'];
 }

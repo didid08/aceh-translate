@@ -69,7 +69,7 @@
 
     <!-- Copyright Section-->
     <div class="copyright py-4 text-center text-white">
-        <div class="container"><small>Copyright &copy; Muhammad Khairul Ammar 2021</small></div>
+        <div class="container"><small>Copyright &copy; Kamus Bahasa Aceh 2021</small></div>
     </div>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
