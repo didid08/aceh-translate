@@ -169,6 +169,15 @@
                                     @endif
                                 </td>
                             </tr>
+                            <tr>
+                                <td style="width: 25%">Audio</td>
+                                <td>
+                                    <audio controls preload="metadata" style=" width:300px;">
+                                        <source src="{{ asset('assets/audio/adee padee.mp3') }}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio><br />
+                                </td>
+                            </tr>
                         </table>
                     @else
                         <div class="text-center" style="padding: 9.4em 0;">
@@ -212,5 +221,16 @@
         });
 
         $("#translateResult").val($("#translateResult").val().trim());
+
+        @if (!isset($translatedWord) && isset($word))
+            $(document).ready(function () {
+                swal({
+                    title: "Terjemahan tidak ditemukan",
+                    text: "Harap coba lagi!",
+                    icon: "error",
+                    button: "OK"
+                });
+            });
+        @endif
     </script>
 @endsection

@@ -18,14 +18,31 @@
                                     // Untuk menghindari kata yang duplikat, jadi saya buat variable jejak. Kemudian nanti dicek didalam foreach apakah hasil yg diiterasi sudah pernah ditampilkan sebelumnya.
                                     $lastWord = null;
                                 @endphp
-                                @foreach ($dictionaries->sortBy('aceh') as $dictionary)
-                                    @if ($lastWord != $dictionary->aceh)
-                                        <a href="{{ route('home.kamus', ['word' => $dictionary->aceh]) }}" class="btn {{ isset($word) ? ($word == $dictionary->aceh ? 'btn-secondary' : 'btn-outline-secondary') : 'btn-outline-secondary' }} mr-2 mb-2">{{ ucfirst($dictionary->aceh) }}</a>
-                                    @endif
-                                    @php
-                                        $lastWord = $dictionary->aceh;
-                                    @endphp
-                                @endforeach
+                                <table class="table table-bordered table-striped" id="daftar-kosakata">
+                                    <thead>
+                                        <tr>
+                                            <th>Kosakata</th>
+                                            <th>Opsi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($dictionaries->sortBy('aceh') as $dictionary)
+                                            @if ($lastWord != $dictionary->aceh)
+                                                <tr>
+                                                    <td style="width: 70%">
+                                                        {{ ucfirst($dictionary->aceh) }}
+                                                    </td>
+                                                    <td class="text-center align-middle pt-3">
+                                                        <a href="{{ route('home.kamus', ['word' => $dictionary->aceh]) }}" class="text-center btn {{ isset($word) ? ($word == $dictionary->aceh ? 'btn-secondary' : 'btn-outline-secondary') : 'btn-outline-secondary' }} mr-2 mb-2">Lihat Detail</a>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @php
+                                                $lastWord = $dictionary->aceh;
+                                            @endphp
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </td>
                         </tr>
                     </table>
@@ -84,6 +101,15 @@
                                     @endif
                                 </td>
                             </tr>
+                            <tr>
+                                <td style="width: 38%">Audio</td>
+                                <td>
+                                    <audio controls preload="metadata" style=" width:300px;">
+                                        <source src="{{ asset('assets/audio/adee padee.mp3') }}" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                    </audio><br />
+                                </td>
+                            </tr>
                         </table>
                     @else
                         <div class="text-center" style="padding: 9.4em 0;">
@@ -97,5 +123,9 @@
 @endsection
 
 @section('custom-script')
-
+    <script>
+        $(document).ready( function () {
+            $('#daftar-kosakata').DataTable();
+        } );
+    </script>
 @endsection
