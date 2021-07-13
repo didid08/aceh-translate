@@ -31,7 +31,7 @@ class KamusController extends Controller
             'aceh' => 'required',
             'indonesia' => 'required',
             'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'audio' => 'file|mimes:mp3|max:10240'
+            'audio' => 'file|mimes:mp3,m4a,ogg,aac|max:10240'
         ], [
             'required' => 'Harap masukkan :attribute',
             'gambar.image' => ':attribute tidak valid',
@@ -64,7 +64,7 @@ class KamusController extends Controller
         if ($request->hasFile('gambar')) {
             $ext = $request->gambar->extension();
             $imageName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
-            $request->gambar->storeAs('images/translate-images', $imageName);
+            $request->gambar->storeAs('img/translate-images', $imageName, 'public_uploads');
             $data['gambar'] = $imageName;
         }
 
@@ -72,7 +72,7 @@ class KamusController extends Controller
         if ($request->hasFile('audio')) {
             $ext = $request->audio->extension();
             $audioName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
-            $request->audio->storeAs('audio/translate-audio', $audioName);
+            $request->audio->storeAs('audio/translate-audio', $audioName, 'public_uploads');
             $data['audio'] = $audioName;
         }
 
@@ -127,7 +127,7 @@ class KamusController extends Controller
             'aceh' => 'required',
             'indonesia' => 'required',
             'gambar' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'audio' => 'file|mimes:mp3|max:10240'
+            'audio' => 'file|mimes:mp3,m4a,ogg,aac|max:10240'
         ], [
             'required' => 'Harap masukkan :attribute',
             'gambar.image' => ':attribute tidak valid',
@@ -161,11 +161,11 @@ class KamusController extends Controller
 
             // Hapus Gambar Lama
             $oldImageName = Dictionary::firstWhere('id', $id)->gambar;
-            Storage::delete('images/translate-images/' . $oldImageName);
+            Storage::disk('public_uploads')->delete('img/translate-images/' . $oldImageName);
 
             $ext = $request->gambar->extension();
             $imageName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
-            $request->gambar->storeAs('images/translate-images', $imageName);
+            $request->gambar->storeAs('img/translate-images', $imageName, 'public_uploads');
             $data['gambar'] = $imageName;
         }
 
@@ -173,11 +173,11 @@ class KamusController extends Controller
         if ($request->hasFile('audio')) {
             // Hapus Audio Lama
             $oldAudioName = Dictionary::firstWhere('id', $id)->audio;
-            Storage::delete('audio/translate-audio/' . $oldAudioName);
+            Storage::disk('public_uploads')->delete('audio/translate-audio/' . $oldAudioName);
 
             $ext = $request->audio->extension();
             $audioName = str_replace(' ', '-', strtolower($request->indonesia)).'-'.Str::random(5).'.'.$ext;
-            $request->audio->storeAs('audio/translate-audio', $audioName);
+            $request->audio->storeAs('audio/translate-audio', $audioName, 'public_uploads');
             $data['audio'] = $audioName;
         }
 
@@ -191,10 +191,10 @@ class KamusController extends Controller
         $dictionary = Dictionary::findOrFail($dictionaryId);
         try {
             if (isset($dictionary->gambar)) {
-                Storage::delete('images/translate-images/'.$dictionary->gambar);
+                Storage::disk('public_uploads')->delete('img/translate-images/'.$dictionary->gambar);
             }
             if (isset($dictionary->audio)) {
-                Storage::delete('audio/translate-audio/'.$dictionary->audio);
+                Storage::disk('public_uploads')->delete('audio/translate-audio/'.$dictionary->audio);
             }
             $dictionary->delete();
             return redirect()->route('admin.kamus')->with('success', 'Kosakata berhasil dihapus');
