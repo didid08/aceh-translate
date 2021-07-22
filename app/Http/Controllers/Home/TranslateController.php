@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use App\Models\Dictionary;
-use App\Models\VocabularyRequest;
-use App\Models\VocabularySuggestion;
+use Illuminate\Support\Facades\Validator; // Manggil package untuk mengelola validator
+use Illuminate\Http\Request; // Manggil package untuk mengelola request
+
+use App\Models\Dictionary; // Memanggil model Dictionary
+use App\Models\VocabularyRequest; // Memanggil model VocabularyRequest
+use App\Models\VocabularySuggestion; // Memanggil model VocabularySuggestion
 
 class TranslateController extends Controller
 {
+    // Fungsi untuk menampilkan halaman translate dan juga untuk menampilkan detail dari kosakata yg kita translatekan
     public function index($word = null, $translateTo = null)
     {
         $data = ['title' => 'Kamus Bahasa Aceh | Translate', 'headerTitle' => 'Translate', 'headerLink' => route('home.translate')];
@@ -92,6 +94,7 @@ class TranslateController extends Controller
         return view('home.translate', $data);
     }
 
+    // Fungsi untuk mengirim saran terjemahan
     public function pushSuggestion (Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -125,6 +128,7 @@ class TranslateController extends Controller
         return redirect()->route('home.translate')->with('success', 'Berhasil menyarankan terjemahan');
     }
 
+    // Fungsi untuk mengirim request terjemahan
     public function pushRequest (Request $request)
     {
         $validator = Validator::make($request->all(), [

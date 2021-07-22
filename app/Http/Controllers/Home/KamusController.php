@@ -8,6 +8,7 @@ use App\Models\Dictionary;
 
 class KamusController extends Controller
 {
+    // Fungsi untuk menampilkan halaman kamus dan juga untuk menampilkan detail dari kosakata yg dipilih
     public function index($word = null)
     {
         $data = [
@@ -17,6 +18,7 @@ class KamusController extends Controller
             'dictionaries' => Dictionary::get()
         ];
 
+        // Ini adalah algoritma complex yg susah dijelaskan (fungsinya buat menampilkan detail dari kosakata yang kita pilih)
         if ($word != null) {
 
             $data['word'] = html_entity_decode($word);
@@ -72,6 +74,7 @@ class KamusController extends Controller
             }
         }
 
+        // Meng-return view
         return view('home.kamus', $data);
     }
 }
