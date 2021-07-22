@@ -1,9 +1,11 @@
 <?php
 
+/* FILE INI BERFUNGSI UNTUK MEMASUKKAN DATA AWAL KEDALAM TABLE "dictionary" */
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Seeder; // Memanggil package buat menangani seeder (wajib)
+use Illuminate\Support\Facades\DB; // Memanggil package DB agar kita dapat memanggil fungsi yang dapat dipakai untuk mengatur database, seperti insert,update,delete,dll. Dalam kasus ini, package ini hanya digunakan buat insert data
 
 class DictionarySeeder extends Seeder
 {
@@ -12,7 +14,7 @@ class DictionarySeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run() // RUNNN SEEDER
     {
 
         $data = json_decode('[
